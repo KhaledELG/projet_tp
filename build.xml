@@ -6,6 +6,13 @@
             <fileset dir="lib" includes="*.jar"></fileset>
         </path>
     </path>
+	
+	<!--CREATION DES NECESSAIRES-->
+	<target name="create">
+		<mkdir dir="ant"/>
+		<mkdir dir="./ant/tests_reports"/>
+		<mkdir dir="./ant/doc"/>
+	</target>
 
     <!--COMPILATION projet_tp-->
     <target name="compilation">
@@ -66,7 +73,7 @@
     </target>
 	
     <!--PROCESSUS COMPLET-->
-    <target name="all" depends="compilation, javadoc, jar, junit, sonar">
+    <target name="all" depends="create, compilation, javadoc, jar, junit, sonar">
         <java classname="edu.centralenantes.projet_tp.Main">
             <classpath path="ant" />
         </java>
