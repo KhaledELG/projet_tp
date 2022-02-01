@@ -38,7 +38,7 @@
 	<property name="sonar.projectVersion" value="1.0"/>
 	<property name="sonar.projectKey" value="projet_tp"/>
 	<property name="sonar.projectName" value="projet_tp"/>	
-	<property name="sonar.login" value="0d88091ee82c872347dfe73bdfd303aad90212c0"/>
+	<property name="sonar.login" value="à renseigner"/>
 	<property name="sonar.sources" value="src/main"/>
 	<property name="sonar.java.binaries" value="target/classes"/>
     <target name="sonar" depends="compilation">
