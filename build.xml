@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="projet_tp" default="all" basedir="."> 
+   
+    <path id="classpath">
+        <path location="lib">
+            <fileset dir="lib" includes="*.jar"></fileset>
+        </path>
+    </path>
+
+    <!--COMPILATION projet_tp-->
+    <target name="compilation">
+        <javac includeantruntime="false" srcdir="./src/main" destdir="ant" />
+        <echo message="COMPILATION DU PROJET REUSSIE"/>
+		<javac classpathref="classpath" includeantruntime="false" srcdir="./src/test" destdir="ant">       
+        </javac>
+        <echo message="COMPILATION DES TESTS REUSSIE" />
+    </target>
+	
+	<!--GENERATION JAVADOC-->
+    <target name="javadoc" depends="compilation">
+        <javadoc sourcepath="src" destdir="./ant/doc" >
+            <fileset dir="src" defaultexcludes="yes">
+                <include name="**" />
+            </fileset>
+        </javadoc>
+        <echo message="JAVADOC GENEREE"/> 
+    </target>
+	
+    <!--SONARQUBE-->
+	<property name="sonar.host.url" value="http://localhost:9000/"/>
+	<property name="sonar.projectVersion" value="1.0"/>
+	<property name="sonar.projectKey" value="projet_tp"/>
+	<property name="sonar.projectName" value="projet_tp"/>	
+	<property name="sonar.login" value="b72931cee405429db04c764d299b68e13f83d6b9"/>
+	<property name="sonar.sources" value="src/main"/>
+	<property name="sonar.java.binaries" value="target/classes"/>
+    <target name="sonar" depends="compilation">
+        <taskdef uri="antlib:org.sonar.ant" resource="org/sonar/ant/antlib.xml">
+            <classpath path="sonarqube-ant-task-2.7.1.1951.jar" />
+		</taskdef>
+        <!-- Execute SonarScanner for Ant Analysis -->
+        <sonar:sonar xmlns:sonar="antlib:org.sonar.ant"/>
+        <echo message="SONAR SCANNER REALISE" />
+    </target>
+	
+
+    <!--GENERATION DU JAR-->
+    <target name="jar" depends="compilation">
+        <jar jarfile="Mastermind.jar" basedir="ant">
+            <manifest>
+                <attribute name="Main-Class" value="edu.centralenantes.projet_tp.Main"/>
+            </manifest>
+        </jar>
+        <echo message="JAR CREATED"/>
+    </target>
+	
+	<!--TESTS UNITAIRES-->
+    <target name="junit" depends="compilation">
+        <junit haltonfailure="false" printsummary="true">
+            <classpath refid="classpath"> </classpath>
+            <test name="JoueurIT" todir="./ant/tests_reports"></test>
+			<test name="MainIT" todir="./ant/tests_reports"></test>
+			<test name="PartieIT" todir="./ant/tests_reports"></test>
+			<formatter type="plain" />
+        </junit>
+    </target>
+	
+    <!--PROCESSUS COMPLET-->
+    <target name="all" depends="compilation, javadoc, jar, junit, sonar">
+        <java classname="edu.centralenantes.projet_tp.Main">
+            <classpath path="ant" />
+        </java>
+    </target>
+</project>
